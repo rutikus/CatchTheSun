@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/CatchTheSun.API/">
+    <Project Path="CatchTheSun.API/CatchTheSunAPI.csproj" />
+  </Folder>
+  <Project Path="CatchTheSun.Core/CatchTheSun.Core.csproj" />
+  <Project Path="CatchTheSun.Data/CatchTheSun.Data.csproj" />
+</Solution>
