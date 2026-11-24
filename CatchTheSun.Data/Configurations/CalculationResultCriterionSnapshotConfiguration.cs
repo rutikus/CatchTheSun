@@ -13,7 +13,7 @@ public class CalculationResultCriterionSnapshotConfiguration : IEntityTypeConfig
         builder.Property(x => x.ValueSnapshot).HasPrecision(20, 6).IsRequired();
         builder.Property(x => x.DirectionSnapshot).HasConversion<string>().HasMaxLength(20).IsRequired();
         builder.Property(x => x.TargetValueSnapshot).HasPrecision(20, 6);
-        builder.Property(x => x.WeightSnapshot).HasPrecision(18, 8).IsRequired();
+        builder.Property(x => x.WeightSnapshot).HasPrecision(18, 8);
         builder.HasAlternateKey(x => new { x.CalculationResultId, x.CriterionId });
         builder.HasIndex(x => new { x.CalculationId, x.CriterionId });
         builder.HasOne<CalculationCriterion>().WithMany()

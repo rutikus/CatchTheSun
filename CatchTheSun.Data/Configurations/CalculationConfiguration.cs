@@ -13,6 +13,8 @@ public class CalculationConfiguration : IEntityTypeConfiguration<Calculation>
         builder.HasAlternateKey(x => new { x.Id, x.SiteId });
         builder.Property(x => x.Method).HasConversion<string>().HasMaxLength(20).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();
+        builder.Property(x => x.AlgorithmVersion).HasMaxLength(32);
+        builder.Property(x => x.OptionsJson).HasColumnType("jsonb");
         builder.HasIndex(x => x.SiteId);
         builder.HasMany(x => x.Criteria).WithOne(x => x.Calculation).HasForeignKey(x => x.CalculationId).OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(x => x.CriterionComparisons).WithOne(x => x.Calculation).HasForeignKey(x => x.CalculationId).OnDelete(DeleteBehavior.Cascade);

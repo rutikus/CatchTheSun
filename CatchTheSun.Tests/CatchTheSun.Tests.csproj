@@ -7,6 +7,7 @@
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.15" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="xunit" Version="2.9.3" />
@@ -16,5 +17,6 @@
     </PackageReference>
     <ProjectReference Include="../CatchTheSun.Core/CatchTheSun.Core.csproj" />
     <ProjectReference Include="../CatchTheSun.Data/CatchTheSun.Data.csproj" />
+    <ProjectReference Include="../CatchTheSun.API/CatchTheSunAPI.csproj" />
   </ItemGroup>
 </Project>

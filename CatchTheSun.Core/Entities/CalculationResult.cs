@@ -6,7 +6,10 @@ public class CalculationResult
     public Guid CalculationId { get; set; }
     public Guid VariantId { get; set; }
     public Guid SiteId { get; set; }
+    public string VariantNameSnapshot { get; set; } = string.Empty;
+    public string? ExternalIdSnapshot { get; set; }
     public decimal? Score { get; set; }
+    public decimal? ParetoSecondaryScore { get; set; }
     public int? Rank { get; set; }
     public bool? IsParetoOptimal { get; set; }
     public int? ParetoFront { get; set; }

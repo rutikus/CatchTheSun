@@ -156,7 +156,7 @@ public class DataIntegrityTests
             .OrderBy(x => x.WeightSnapshot).ToListAsync();
         Assert.Equal(2, snapshots.Count);
         Assert.NotEqual(snapshots[0].CalculationId, snapshots[1].CalculationId);
-        Assert.Equal(new[] { 1m, 5m }, snapshots.Select(x => x.WeightSnapshot));
+        Assert.Equal(new[] { 1m, 5m }, snapshots.Select(x => x.WeightSnapshot!.Value));
         Assert.All(snapshots, x => Assert.Equal(25m, x.ValueSnapshot));
     }
 

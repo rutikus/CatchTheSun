@@ -9,7 +9,7 @@ public class CalculationResultCriterionSnapshot
     public decimal ValueSnapshot { get; set; }
     public CriterionDirection DirectionSnapshot { get; set; }
     public decimal? TargetValueSnapshot { get; set; }
-    public decimal WeightSnapshot { get; set; }
+    public decimal? WeightSnapshot { get; set; }
 
     public CalculationResult CalculationResult { get; set; } = null!;
 }

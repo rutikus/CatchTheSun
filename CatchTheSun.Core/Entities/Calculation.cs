@@ -6,6 +6,11 @@ public class Calculation
     public Guid SiteId { get; set; }
     public CalculationMethod Method { get; set; }
     public DateTime CreatedAt { get; set; }
+    public string? AlgorithmVersion { get; set; }
+    public string? OptionsJson { get; set; }
+    public double? ConsistencyRatio { get; set; }
+    public double? LambdaMax { get; set; }
+    public int? IterationCount { get; set; }
 
     public Site Site { get; set; } = null!;
     public ICollection<CalculationCriterion> Criteria { get; set; } = new List<CalculationCriterion>();

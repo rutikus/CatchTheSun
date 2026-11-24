@@ -43,7 +43,7 @@ public class CriterionComparison
             CalculationId = calculationId,
             CriterionAId = criterionBId,
             CriterionBId = criterionAId,
-            Value = 1m / value
+                Value = GetReciprocal(value)
         };
     }
 
@@ -60,4 +60,26 @@ public class CriterionComparison
 
         return false;
     }
+
+    private static decimal GetReciprocal(decimal value) => value switch
+    {
+        1m => 1m,
+        2m => 0.5m,
+        3m => 1m / 3m,
+        4m => 0.25m,
+        5m => 0.2m,
+        6m => 1m / 6m,
+        7m => 1m / 7m,
+        8m => 0.125m,
+        9m => 1m / 9m,
+        0.5m => 2m,
+        1m / 3m => 3m,
+        0.25m => 4m,
+        0.2m => 5m,
+        1m / 6m => 6m,
+        1m / 7m => 7m,
+        0.125m => 8m,
+        1m / 9m => 9m,
+        _ => throw new ArgumentOutOfRangeException(nameof(value), "Value must be on the Saaty scale from 1 to 9 or its reciprocal.")
+    };
 }

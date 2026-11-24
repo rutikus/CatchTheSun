@@ -14,8 +14,10 @@ public sealed class CriterionValueRepositoryTests(PostgreSqlFixture fixture)
     public async Task ExistingMigrationsApplyAndMatchPostgreSqlSchema()
     {
         await using var db = fixture.CreateDbContext();
+        var expected = db.Database.GetMigrations().ToArray();
         var applied = await db.Database.GetAppliedMigrationsAsync();
-        Assert.Equal(new[] { "20261124134048_InitialCreate", "20261124175506_StrengthenDataIntegrity" }, applied);
+        Assert.Equal(expected, applied);
+        Assert.Empty(await db.Database.GetPendingMigrationsAsync());
 
         await using var command = db.Database.GetDbConnection().CreateCommand();
         command.CommandText = "SELECT format_type(a.atttypid, a.atttypmod) FROM pg_attribute a JOIN pg_class t ON t.oid = a.attrelid JOIN pg_namespace n ON n.oid = t.relnamespace WHERE n.nspname = current_schema() AND t.relname = 'CriterionValues' AND a.attname = 'Value' AND NOT a.attisdropped";

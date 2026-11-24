@@ -1,4 +1,5 @@
 using CatchTheSun.Core.Interfaces;
+using CatchTheSun.Core.CalculationEngine.Algorithms;
 using CatchTheSun.Core.Services;
 using CatchTheSun.Data;
 using CatchTheSun.Data.Repositories;
@@ -20,6 +21,12 @@ builder.Services.AddScoped<ICriterionRepository, CriterionRepository>();
 builder.Services.AddScoped<CriterionService>();
 builder.Services.AddScoped<ICriterionValueRepository, CriterionValueRepository>();
 builder.Services.AddScoped<CriterionValueService>();
+builder.Services.AddScoped<ICalculationRepository, CalculationRepository>();
+builder.Services.AddScoped<ICalculationService, CalculationService>();
+builder.Services.AddScoped<ICalculationAlgorithm, AhpWeightedSumAlgorithm>();
+builder.Services.AddScoped<ICalculationAlgorithm, TopsisAlgorithm>();
+builder.Services.AddScoped<ICalculationAlgorithm, ParetoAlgorithm>();
+builder.Services.AddScoped<ICalculationAlgorithmFactory, CalculationAlgorithmFactory>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();

@@ -28,13 +28,29 @@ namespace CatchTheSun.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("AlgorithmVersion")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)");
+
+                    b.Property<double?>("ConsistencyRatio")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("IterationCount")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("LambdaMax")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Method")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<string>("OptionsJson")
+                        .HasColumnType("jsonb");
 
                     b.Property<Guid>("SiteId")
                         .HasColumnType("uuid");
@@ -63,11 +79,23 @@ namespace CatchTheSun.Data.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<bool>("IsRequiredSnapshot")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("NameSnapshot")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<decimal?>("TargetValueSnapshot")
                         .HasPrecision(20, 6)
                         .HasColumnType("numeric(20,6)");
 
-                    b.Property<decimal>("Weight")
+                    b.Property<string>("UnitSnapshot")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<decimal?>("Weight")
                         .HasPrecision(18, 8)
                         .HasColumnType("numeric(18,8)");
 
@@ -87,11 +115,19 @@ namespace CatchTheSun.Data.Migrations
                     b.Property<Guid>("CalculationId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ExternalIdSnapshot")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<bool?>("IsParetoOptimal")
                         .HasColumnType("boolean");
 
                     b.Property<int?>("ParetoFront")
                         .HasColumnType("integer");
+
+                    b.Property<decimal?>("ParetoSecondaryScore")
+                        .HasPrecision(20, 8)
+                        .HasColumnType("numeric(20,8)");
 
                     b.Property<int?>("Rank")
                         .HasColumnType("integer");
@@ -105,6 +141,11 @@ namespace CatchTheSun.Data.Migrations
 
                     b.Property<Guid>("VariantId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("VariantNameSnapshot")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.HasKey("Id");
 
@@ -148,7 +189,7 @@ namespace CatchTheSun.Data.Migrations
                         .HasPrecision(20, 6)
                         .HasColumnType("numeric(20,6)");
 
-                    b.Property<decimal>("WeightSnapshot")
+                    b.Property<decimal?>("WeightSnapshot")
                         .HasPrecision(18, 8)
                         .HasColumnType("numeric(18,8)");
 
