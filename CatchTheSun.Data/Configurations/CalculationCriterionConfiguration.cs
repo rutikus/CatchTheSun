@@ -10,10 +10,10 @@ public class CalculationCriterionConfiguration : IEntityTypeConfiguration<Calcul
     {
         builder.ToTable("CalculationCriteria");
         builder.HasKey(x => x.Id);
+        builder.HasAlternateKey(x => new { x.CalculationId, x.CriterionId });
         builder.Property(x => x.Weight).HasPrecision(18, 8).IsRequired();
         builder.Property(x => x.DirectionSnapshot).HasConversion<string>().HasMaxLength(20).IsRequired();
         builder.Property(x => x.TargetValueSnapshot).HasPrecision(20, 6);
-        builder.HasIndex(x => new { x.CalculationId, x.CriterionId }).IsUnique();
         builder.HasIndex(x => x.CriterionId);
     }
 }

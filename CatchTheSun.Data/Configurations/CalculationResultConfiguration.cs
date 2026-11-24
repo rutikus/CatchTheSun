@@ -10,8 +10,13 @@ public class CalculationResultConfiguration : IEntityTypeConfiguration<Calculati
     {
         builder.ToTable("CalculationResults");
         builder.HasKey(x => x.Id);
+        builder.HasAlternateKey(x => new { x.Id, x.CalculationId });
         builder.Property(x => x.Score).HasPrecision(20, 8);
         builder.HasIndex(x => new { x.CalculationId, x.VariantId }).IsUnique();
         builder.HasIndex(x => x.VariantId);
+        builder.HasMany(x => x.InputSnapshots).WithOne(x => x.CalculationResult)
+            .HasForeignKey(x => new { x.CalculationResultId, x.CalculationId })
+            .HasPrincipalKey(x => new { x.Id, x.CalculationId })
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -11,4 +11,5 @@ public class Calculation
     public ICollection<CalculationCriterion> Criteria { get; set; } = new List<CalculationCriterion>();
     public ICollection<CriterionComparison> CriterionComparisons { get; set; } = new List<CriterionComparison>();
     public ICollection<CalculationResult> Results { get; set; } = new List<CalculationResult>();
+
 }

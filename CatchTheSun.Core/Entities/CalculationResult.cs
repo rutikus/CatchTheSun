@@ -5,6 +5,7 @@ public class CalculationResult
     public Guid Id { get; set; }
     public Guid CalculationId { get; set; }
     public Guid VariantId { get; set; }
+    public Guid SiteId { get; set; }
     public decimal? Score { get; set; }
     public int? Rank { get; set; }
     public bool? IsParetoOptimal { get; set; }
@@ -12,4 +13,5 @@ public class CalculationResult
 
     public Calculation Calculation { get; set; } = null!;
     public Variant Variant { get; set; } = null!;
+    public ICollection<CalculationResultCriterionSnapshot> InputSnapshots { get; set; } = new List<CalculationResultCriterionSnapshot>();
 }

@@ -10,11 +10,15 @@ public class VariantConfiguration : IEntityTypeConfiguration<Variant>
     {
         builder.ToTable("Variants");
         builder.HasKey(x => x.Id);
+        builder.HasAlternateKey(x => new { x.Id, x.SiteId });
         builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
         builder.Property(x => x.ExternalId).HasMaxLength(200);
         builder.Property(x => x.CreatedAt).IsRequired();
         builder.HasIndex(x => x.SiteId);
         builder.HasMany(x => x.CriterionValues).WithOne(x => x.Variant).HasForeignKey(x => x.VariantId).OnDelete(DeleteBehavior.Cascade);
-        builder.HasMany(x => x.CalculationResults).WithOne(x => x.Variant).HasForeignKey(x => x.VariantId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasMany(x => x.CalculationResults).WithOne(x => x.Variant)
+            .HasForeignKey(x => new { x.VariantId, x.SiteId })
+            .HasPrincipalKey(x => new { x.Id, x.SiteId })
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

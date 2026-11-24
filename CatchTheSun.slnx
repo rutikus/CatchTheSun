@@ -4,4 +4,5 @@
   </Folder>
   <Project Path="CatchTheSun.Core/CatchTheSun.Core.csproj" />
   <Project Path="CatchTheSun.Data/CatchTheSun.Data.csproj" />
+  <Project Path="CatchTheSun.Tests/CatchTheSun.Tests.csproj" />
 </Solution>
