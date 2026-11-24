@@ -18,6 +18,8 @@ builder.Services.AddScoped<IVariantRepository, VariantRepository>();
 builder.Services.AddScoped<VariantService>();
 builder.Services.AddScoped<ICriterionRepository, CriterionRepository>();
 builder.Services.AddScoped<CriterionService>();
+builder.Services.AddScoped<ICriterionValueRepository, CriterionValueRepository>();
+builder.Services.AddScoped<CriterionValueService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
