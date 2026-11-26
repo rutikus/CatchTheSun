@@ -13,6 +13,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CalculationCriterion> CalculationCriteria => Set<CalculationCriterion>();
     public DbSet<CriterionComparison> CriterionComparisons => Set<CriterionComparison>();
     public DbSet<CalculationResult> CalculationResults => Set<CalculationResult>();
+    public DbSet<DirectSunImport> DirectSunImports => Set<DirectSunImport>();
+    public DbSet<DirectSunMeasurementRecord> DirectSunMeasurements => Set<DirectSunMeasurementRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

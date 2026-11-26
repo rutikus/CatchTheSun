@@ -308,6 +308,93 @@ namespace CatchTheSun.Data.Migrations
                     b.ToTable("CriterionValues", (string)null);
                 });
 
+            modelBuilder.Entity("CatchTheSun.Core.Entities.DirectSunImport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ImportedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SourceCsv")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("DirectSunImports", (string)null);
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.DirectSunMeasurementRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("DirectSunHoursTestDay")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("FeatureId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("GridSpacingMetres")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("HeightAboveZoneMetres")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("ImportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("RawRow")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RecreationalType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SampleCountDaylight")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SensorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SunlitSamples")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("XMetres")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("YMetres")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("ZMetres")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImportId", "FeatureId");
+
+                    b.HasIndex("ImportId", "SensorId")
+                        .IsUnique();
+
+                    b.ToTable("DirectSunMeasurements", (string)null);
+                });
+
             modelBuilder.Entity("CatchTheSun.Core.Entities.Site", b =>
                 {
                     b.Property<Guid>("Id")
@@ -499,6 +586,28 @@ namespace CatchTheSun.Data.Migrations
                     b.Navigation("Variant");
                 });
 
+            modelBuilder.Entity("CatchTheSun.Core.Entities.DirectSunImport", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.Variant", "Variant")
+                        .WithMany("DirectSunImports")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.DirectSunMeasurementRecord", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.DirectSunImport", "Import")
+                        .WithMany("Measurements")
+                        .HasForeignKey("ImportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Import");
+                });
+
             modelBuilder.Entity("CatchTheSun.Core.Entities.Variant", b =>
                 {
                     b.HasOne("CatchTheSun.Core.Entities.Site", "Site")
@@ -531,6 +640,11 @@ namespace CatchTheSun.Data.Migrations
                     b.Navigation("Values");
                 });
 
+            modelBuilder.Entity("CatchTheSun.Core.Entities.DirectSunImport", b =>
+                {
+                    b.Navigation("Measurements");
+                });
+
             modelBuilder.Entity("CatchTheSun.Core.Entities.Site", b =>
                 {
                     b.Navigation("Calculations");
@@ -543,6 +657,8 @@ namespace CatchTheSun.Data.Migrations
                     b.Navigation("CalculationResults");
 
                     b.Navigation("CriterionValues");
+
+                    b.Navigation("DirectSunImports");
                 });
 #pragma warning restore 612, 618
         }

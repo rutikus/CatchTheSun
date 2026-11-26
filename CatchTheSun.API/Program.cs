@@ -17,6 +17,7 @@ builder.Services.AddScoped<ISiteRepository, SiteRepository>();
 builder.Services.AddScoped<SiteService>();
 builder.Services.AddScoped<IVariantRepository, VariantRepository>();
 builder.Services.AddScoped<VariantService>();
+builder.Services.AddSingleton<CatchTheSun.Core.Sun.DirectSunCsvParser>();
 builder.Services.AddScoped<ICriterionRepository, CriterionRepository>();
 builder.Services.AddScoped<CriterionService>();
 builder.Services.AddScoped<ICriterionValueRepository, CriterionValueRepository>();

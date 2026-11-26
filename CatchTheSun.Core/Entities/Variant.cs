@@ -11,4 +11,5 @@ public class Variant
     public Site Site { get; set; } = null!;
     public ICollection<CriterionValue> CriterionValues { get; set; } = new List<CriterionValue>();
     public ICollection<CalculationResult> CalculationResults { get; set; } = new List<CalculationResult>();
+    public ICollection<DirectSunImport> DirectSunImports { get; set; } = new List<DirectSunImport>();
 }
