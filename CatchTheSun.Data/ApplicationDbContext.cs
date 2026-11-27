@@ -15,6 +15,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<CalculationResult> CalculationResults => Set<CalculationResult>();
     public DbSet<DirectSunImport> DirectSunImports => Set<DirectSunImport>();
     public DbSet<DirectSunMeasurementRecord> DirectSunMeasurements => Set<DirectSunMeasurementRecord>();
+    public DbSet<UrbanSketchImport> UrbanSketchImports => Set<UrbanSketchImport>();
+    public DbSet<UrbanSketchMeasurementRecord> UrbanSketchMeasurements => Set<UrbanSketchMeasurementRecord>();
+    public DbSet<InsolationComparison> InsolationComparisons => Set<InsolationComparison>();
+    public DbSet<InsolationComparisonPoint> InsolationComparisonPoints => Set<InsolationComparisonPoint>();
+    public DbSet<Expert> Experts => Set<Expert>();
+    public DbSet<Questionnaire> Questionnaires => Set<Questionnaire>();
+    public DbSet<QuestionnaireCriterion> QuestionnaireCriteria => Set<QuestionnaireCriterion>();
+    public DbSet<ExpertResponse> ExpertResponses => Set<ExpertResponse>();
+    public DbSet<PairwiseComparison> PairwiseComparisons => Set<PairwiseComparison>();
+    public DbSet<CriterionRanking> CriterionRankings => Set<CriterionRanking>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

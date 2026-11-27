@@ -282,6 +282,39 @@ namespace CatchTheSun.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CatchTheSun.Core.Entities.CriterionRanking", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CriterionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ExpertResponseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("QuestionnaireId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Rank")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertResponseId", "CriterionId")
+                        .IsUnique();
+
+                    b.HasIndex("ExpertResponseId", "QuestionnaireId");
+
+                    b.HasIndex("QuestionnaireId", "CriterionId");
+
+                    b.ToTable("CriterionRankings", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_CriterionRankings_Rank", "\"Rank\" >= 1");
+                        });
+                });
+
             modelBuilder.Entity("CatchTheSun.Core.Entities.CriterionValue", b =>
                 {
                     b.Property<Guid>("Id")
@@ -395,6 +428,274 @@ namespace CatchTheSun.Data.Migrations
                     b.ToTable("DirectSunMeasurements", (string)null);
                 });
 
+            modelBuilder.Entity("CatchTheSun.Core.Entities.Expert", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AnonymousCode")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ExperienceCategory")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnonymousCode")
+                        .IsUnique();
+
+                    b.ToTable("Experts", (string)null);
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.ExpertResponse", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ExpertId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("QuestionnaireId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertId");
+
+                    b.HasIndex("QuestionnaireId", "ExpertId")
+                        .IsUnique();
+
+                    b.ToTable("ExpertResponses", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_ExpertResponses_Status", "\"Status\" = 'Submitted'");
+                        });
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.InsolationComparison", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ComparedPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<double?>("Mae")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Mape")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid?>("ReferenceDirectSunImportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ReferencePoints")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("ReferenceUrbanSketchImportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("Rmse")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid?>("TestDirectSunImportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("TestPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("TestUrbanSketchImportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("UnmatchedReferencePoints")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UnmatchedTestPoints")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReferenceDirectSunImportId");
+
+                    b.HasIndex("ReferenceUrbanSketchImportId");
+
+                    b.HasIndex("TestDirectSunImportId");
+
+                    b.HasIndex("TestUrbanSketchImportId");
+
+                    b.HasIndex("VariantId", "CreatedAt");
+
+                    b.ToTable("InsolationComparisons", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_InsolationComparisons_ReferenceSource", "(\"ReferenceDirectSunImportId\" IS NOT NULL AND \"ReferenceUrbanSketchImportId\" IS NULL) OR (\"ReferenceDirectSunImportId\" IS NULL AND \"ReferenceUrbanSketchImportId\" IS NOT NULL)");
+
+                            t.HasCheckConstraint("CK_InsolationComparisons_TestSource", "(\"TestDirectSunImportId\" IS NOT NULL AND \"TestUrbanSketchImportId\" IS NULL) OR (\"TestDirectSunImportId\" IS NULL AND \"TestUrbanSketchImportId\" IS NOT NULL)");
+                        });
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.InsolationComparisonPoint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("AbsoluteError")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("InsolationComparisonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("ReferenceValue")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("RelativeError")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("SensorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("TestValue")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsolationComparisonId", "SensorId")
+                        .IsUnique();
+
+                    b.ToTable("InsolationComparisonPoints", (string)null);
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.PairwiseComparison", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ExpertResponseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FirstCriterionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("QuestionnaireId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SecondCriterionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Value")
+                        .HasPrecision(29, 28)
+                        .HasColumnType("numeric(29,28)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertResponseId", "QuestionnaireId");
+
+                    b.HasIndex("QuestionnaireId", "FirstCriterionId");
+
+                    b.HasIndex("QuestionnaireId", "SecondCriterionId");
+
+                    b.HasIndex("ExpertResponseId", "FirstCriterionId", "SecondCriterionId")
+                        .IsUnique();
+
+                    b.ToTable("PairwiseComparisons", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_PairwiseComparisons_SaatyAndOrder", "\"FirstCriterionId\" < \"SecondCriterionId\" AND (\"Value\" IN (1,2,3,4,5,6,7,8,9) OR \"Value\" IN (0.5,0.3333333333333333333333333333,0.25,0.2,0.1666666666666666666666666667,0.1428571428571428571428571429,0.125,0.1111111111111111111111111111))");
+                        });
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.Questionnaire", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ClosedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(4000)
+                        .HasColumnType("character varying(4000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime?>("PublishedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Questionnaires", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Questionnaires_PublicationDates", "(\"Status\" = 'Draft' AND \"PublishedAt\" IS NULL AND \"ClosedAt\" IS NULL) OR (\"Status\" = 'Published' AND \"PublishedAt\" IS NOT NULL AND \"ClosedAt\" IS NULL) OR (\"Status\" = 'Closed' AND \"PublishedAt\" IS NOT NULL AND \"ClosedAt\" IS NOT NULL)");
+
+                            t.HasCheckConstraint("CK_Questionnaires_Status", "\"Status\" IN ('Draft','Published','Closed')");
+                        });
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.QuestionnaireCriterion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CriterionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("QuestionnaireId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CriterionId");
+
+                    b.HasIndex("QuestionnaireId", "DisplayOrder")
+                        .IsUnique();
+
+                    b.ToTable("QuestionnaireCriteria", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_QuestionnaireCriteria_DisplayOrder", "\"DisplayOrder\" >= 0");
+                        });
+                });
+
             modelBuilder.Entity("CatchTheSun.Core.Entities.Site", b =>
                 {
                     b.Property<Guid>("Id")
@@ -421,6 +722,93 @@ namespace CatchTheSun.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sites", (string)null);
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.UrbanSketchImport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ImportedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SourceCsv")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VariantId");
+
+                    b.ToTable("UrbanSketchImports", (string)null);
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.UrbanSketchMeasurementRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("DirectSunHoursTestDay")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("FeatureId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("GridSpacingMetres")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("HeightAboveZoneMetres")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("ImportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("RawRow")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RecreationalType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SampleCountDaylight")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SensorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SunlitSamples")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("XMetres")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("YMetres")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("ZMetres")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImportId", "FeatureId");
+
+                    b.HasIndex("ImportId", "SensorId")
+                        .IsUnique();
+
+                    b.ToTable("UrbanSketchMeasurements", (string)null);
                 });
 
             modelBuilder.Entity("CatchTheSun.Core.Entities.Variant", b =>
@@ -567,6 +955,25 @@ namespace CatchTheSun.Data.Migrations
                     b.Navigation("CriterionB");
                 });
 
+            modelBuilder.Entity("CatchTheSun.Core.Entities.CriterionRanking", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.ExpertResponse", "ExpertResponse")
+                        .WithMany("Rankings")
+                        .HasForeignKey("ExpertResponseId", "QuestionnaireId")
+                        .HasPrincipalKey("Id", "QuestionnaireId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CatchTheSun.Core.Entities.QuestionnaireCriterion", null)
+                        .WithMany()
+                        .HasForeignKey("QuestionnaireId", "CriterionId")
+                        .HasPrincipalKey("QuestionnaireId", "CriterionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpertResponse");
+                });
+
             modelBuilder.Entity("CatchTheSun.Core.Entities.CriterionValue", b =>
                 {
                     b.HasOne("CatchTheSun.Core.Entities.Criterion", "Criterion")
@@ -600,6 +1007,142 @@ namespace CatchTheSun.Data.Migrations
             modelBuilder.Entity("CatchTheSun.Core.Entities.DirectSunMeasurementRecord", b =>
                 {
                     b.HasOne("CatchTheSun.Core.Entities.DirectSunImport", "Import")
+                        .WithMany("Measurements")
+                        .HasForeignKey("ImportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Import");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.ExpertResponse", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.Expert", "Expert")
+                        .WithMany("Responses")
+                        .HasForeignKey("ExpertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CatchTheSun.Core.Entities.Questionnaire", "Questionnaire")
+                        .WithMany("Responses")
+                        .HasForeignKey("QuestionnaireId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Expert");
+
+                    b.Navigation("Questionnaire");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.InsolationComparison", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.DirectSunImport", "ReferenceDirectSunImport")
+                        .WithMany()
+                        .HasForeignKey("ReferenceDirectSunImportId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CatchTheSun.Core.Entities.UrbanSketchImport", "ReferenceUrbanSketchImport")
+                        .WithMany()
+                        .HasForeignKey("ReferenceUrbanSketchImportId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CatchTheSun.Core.Entities.DirectSunImport", "TestDirectSunImport")
+                        .WithMany()
+                        .HasForeignKey("TestDirectSunImportId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CatchTheSun.Core.Entities.UrbanSketchImport", "TestUrbanSketchImport")
+                        .WithMany()
+                        .HasForeignKey("TestUrbanSketchImportId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CatchTheSun.Core.Entities.Variant", "Variant")
+                        .WithMany()
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReferenceDirectSunImport");
+
+                    b.Navigation("ReferenceUrbanSketchImport");
+
+                    b.Navigation("TestDirectSunImport");
+
+                    b.Navigation("TestUrbanSketchImport");
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.InsolationComparisonPoint", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.InsolationComparison", "Comparison")
+                        .WithMany("Points")
+                        .HasForeignKey("InsolationComparisonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comparison");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.PairwiseComparison", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.ExpertResponse", "ExpertResponse")
+                        .WithMany("PairwiseComparisons")
+                        .HasForeignKey("ExpertResponseId", "QuestionnaireId")
+                        .HasPrincipalKey("Id", "QuestionnaireId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CatchTheSun.Core.Entities.QuestionnaireCriterion", null)
+                        .WithMany()
+                        .HasForeignKey("QuestionnaireId", "FirstCriterionId")
+                        .HasPrincipalKey("QuestionnaireId", "CriterionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CatchTheSun.Core.Entities.QuestionnaireCriterion", null)
+                        .WithMany()
+                        .HasForeignKey("QuestionnaireId", "SecondCriterionId")
+                        .HasPrincipalKey("QuestionnaireId", "CriterionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpertResponse");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.QuestionnaireCriterion", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.Criterion", "Criterion")
+                        .WithMany()
+                        .HasForeignKey("CriterionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CatchTheSun.Core.Entities.Questionnaire", "Questionnaire")
+                        .WithMany("Criteria")
+                        .HasForeignKey("QuestionnaireId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Criterion");
+
+                    b.Navigation("Questionnaire");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.UrbanSketchImport", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.Variant", "Variant")
+                        .WithMany("UrbanSketchImports")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.UrbanSketchMeasurementRecord", b =>
+                {
+                    b.HasOne("CatchTheSun.Core.Entities.UrbanSketchImport", "Import")
                         .WithMany("Measurements")
                         .HasForeignKey("ImportId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -645,11 +1188,40 @@ namespace CatchTheSun.Data.Migrations
                     b.Navigation("Measurements");
                 });
 
+            modelBuilder.Entity("CatchTheSun.Core.Entities.Expert", b =>
+                {
+                    b.Navigation("Responses");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.ExpertResponse", b =>
+                {
+                    b.Navigation("PairwiseComparisons");
+
+                    b.Navigation("Rankings");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.InsolationComparison", b =>
+                {
+                    b.Navigation("Points");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.Questionnaire", b =>
+                {
+                    b.Navigation("Criteria");
+
+                    b.Navigation("Responses");
+                });
+
             modelBuilder.Entity("CatchTheSun.Core.Entities.Site", b =>
                 {
                     b.Navigation("Calculations");
 
                     b.Navigation("Variants");
+                });
+
+            modelBuilder.Entity("CatchTheSun.Core.Entities.UrbanSketchImport", b =>
+                {
+                    b.Navigation("Measurements");
                 });
 
             modelBuilder.Entity("CatchTheSun.Core.Entities.Variant", b =>
@@ -659,6 +1231,8 @@ namespace CatchTheSun.Data.Migrations
                     b.Navigation("CriterionValues");
 
                     b.Navigation("DirectSunImports");
+
+                    b.Navigation("UrbanSketchImports");
                 });
 #pragma warning restore 612, 618
         }

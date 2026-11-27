@@ -63,6 +63,8 @@ public sealed class DirectSunCsvParserTests
     [Fact]
     public void RejectsOutOfRangeSunHours() => Assert.Throws<FormatException>(() => new DirectSunCsvParser().Parse(Header + "\n" + Row(1, hours: "24.1")));
     [Fact]
+    public void RejectsNonNumericCoordinate() => Assert.Throws<FormatException>(() => new DirectSunCsvParser().Parse(Header + "\n" + Row(1).Replace(",60.1,56.8,", ",not-a-number,56.8,")));
+    [Fact]
     public void RejectsInconsistentSampleCounts() => Assert.Throws<FormatException>(() => new DirectSunCsvParser().Parse(Header + "\n" + Row(1).Replace(",2,4", ",5,4")));
     [Fact]
     public void RejectsWrongColumnCount() => Assert.Throws<FormatException>(() => new DirectSunCsvParser().Parse(Header + "\n" + "only,three,columns"));
